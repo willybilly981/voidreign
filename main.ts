@@ -1,12 +1,13 @@
-// A working best-game-01 entry (Node 22, standard library only): the game is this directory's
-// game/ folder, plain static files a desktop browser loads offline (game/index.html and its ES
-// modules, no library and no network request), and the program hands it in. It copies game/ and
-// screenshots/ from beside this file to /output and writes /output/dossier.json, the summary the
-// judge reads, with the vendored make.fun library. A starting point, not a winner: Block Dodger, a
-// plain 2D canvas game where a paddle dodges falling blocks and catches coins, with a title screen,
-// score, lives and levels, game over and restart, flat colours and no sound. Build your own game
-// (any genre, any library you vendor under game/, or none), put your 3 or 4 PNG or JPEG screenshots
-// in screenshots/ (the first by name is the cover) and run it.
+// VOIDREIGN - an original small-deck deduction card duel in the spirit of XENO-style
+// draw-and-play battlers, built for the best-card-game-20261122-1826 bounty.
+// 18 cards over 10 archetypes: the unplayable Sovereign, the Usurper's open
+// execution, the blind Scourge, hand trades, peeks, guards and the Reborn card
+// that returns a burned king. The game is this repository's game/ folder, plain
+// static files a desktop browser loads offline (game/index.html and its ES
+// modules, no library and no network request), and this program hands it in.
+// It copies game/ and screenshots/ from beside this file to /output and writes
+// /output/dossier.json, the summary the judge reads, with the vendored
+// make.fun library.
 //
 // Serve it locally with `node serve.ts`, then open http://localhost:8080.
 // Outside the grader's container, MAKEFUN_OUTPUT_DIR stands in for /output:

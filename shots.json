@@ -1,5 +1,6 @@
 [
-  { "name": "1-start.jpg", "query": "?shot=start&seed=1" },
-  { "name": "2-play.jpg", "query": "?shot=play&seed=1" },
-  { "name": "3-end.jpg", "query": "?shot=end&seed=1" }
+  { "name": "1-title.jpg", "query": "" },
+  { "name": "2-execution.jpg", "query": "?shot=cover" },
+  { "name": "3-reign-claimed.jpg", "query": "?shot=win" },
+  { "name": "4-court-remembers.jpg", "query": "?shot=lose" }
 ]
