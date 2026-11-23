@@ -92,6 +92,7 @@ export const Sound = {
   blip(freq, dur = .08, type = 'sine', gain = .12, slide = 0) {
     if (!this.enabled()) return;
     const c = ac();
+    if (c.state === 'suspended') c.resume().catch(() => {});
     const o = c.createOscillator(), g = c.createGain();
     o.type = type; o.frequency.value = freq;
     if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(30, freq + slide), c.currentTime + dur);

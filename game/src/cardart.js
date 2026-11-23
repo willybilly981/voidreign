@@ -1,6 +1,4 @@
-// cardart.js - procedural card faces for VOIDREIGN.
-// Every card is drawn as inline SVG: a rank badge, a unique glyph silhouette, a
-// two-stop suit gradient and the effect text. No image files, no network.
+// cardart.js - procedural inline SVG card faces for VOIDREIGN.
 
 const GLYPHS = {
   spark: '<path d="M50 12 L58 42 L86 40 L62 56 L70 88 L50 66 L30 88 L38 56 L14 40 L42 42 Z" />',
@@ -15,46 +13,43 @@ const GLYPHS = {
   crown: '<path d="M20 66 L26 36 L40 50 L50 24 L60 50 L74 36 L80 66 Z M22 72 L78 72 L78 80 L22 80 Z" /><circle cx="50" cy="20" r="5" /><circle cx="24" cy="32" r="4" /><circle cx="76" cy="32" r="4" />',
 };
 
-// A single glyph fills a 100x100 viewBox, recolored per card.
+let gradSeq = 0;
+
 export function glyphSVG(card, cls = '') {
   const hue = card.hue;
+  // unique gradient id per rendered SVG to avoid DOM id collisions across duplicate cards
+  const gid = `g-${card.id}-${++gradSeq}`;
   return `<svg class="glyph ${cls}" viewBox="0 0 100 100" aria-hidden="true">
     <defs>
-      <linearGradient id="g-${card.id}" x1="0" y1="0" x2="0" y2="1">
+      <linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0" stop-color="hsl(${hue} ${card.sat}% 78%)"/>
         <stop offset="1" stop-color="hsl(${hue} ${card.sat}% ${card.lum}%)"/>
       </linearGradient>
     </defs>
-    <g fill="url(#g-${card.id})">${GLYPHS[card.glyph]}</g>
+    <g fill="url(#${gid})">${GLYPHS[card.glyph]}</g>
   </svg>`;
 }
 
-function esc(s) {
-  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+export function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-// Front face of a card. size: 'hand' | 'mini' | 'tabled'.
 export function cardFace(card, size = 'hand') {
   const { hue, sat, lum } = card;
   const dark = `hsl(${hue} 40% 14%)`;
   const mid = `hsl(${hue} ${Math.max(30, sat - 15)}% ${Math.max(18, lum - 18)}%)`;
+  const effect = size === 'hand' || size === 'pick' ? card.effect : '';
   return `<div class="card-face card-${card.id} size-${size}"
       style="--hue:${hue};--sat:${sat}%;--lum:${lum}%">
     <div class="card-glow" style="background:radial-gradient(ellipse at 50% 30%, hsl(${hue} ${sat}% ${lum + 8}% / .55), transparent 62%)"></div>
     <div class="card-rank">${card.rank}</div>
     <div class="card-art">${glyphSVG(card)}</div>
     <div class="card-name">${esc(card.name)}</div>
-    <div class="card-effect">${esc(shortEffect(card, size))}</div>
+    ${effect ? `<div class="card-effect">${esc(effect)}</div>` : ''}
     <div class="card-fil" style="border-color:hsl(${hue} ${sat}% ${lum}% / .5);background:linear-gradient(160deg, ${mid}aa, ${dark}e6)"></div>
   </div>`;
 }
 
-function shortEffect(card, size) {
-  if (size !== 'hand') return '';
-  return card.effect;
-}
-
-// Card back: the Void seal.
 export function cardBack(size = 'hand') {
   return `<div class="card-face card-back-face size-${size}">
     <div class="back-seal">
